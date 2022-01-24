@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% block title %}
+    Resultado del Préstamo
+{% endblock title %}
+{% block body %}
+
+{% if messages %}
+  <div class="container d-flex justify-content-center">
+    {% for message in messages %}
+      {% if message|stringformat:"s" == "approved" %}
+        <div class="col-6 alert alert-success" role="alert">
+          <h4> 
+            <i class="bi bi-check-circle-fill"></i>
+            Préstamo aprobado
+          </h4>
+          <p>El equipo de Moni se contactará para seguir con el proceso</p>
+          <hr>
+          <p class="mb-0">Gracias por elegirnos</p>
+        </div>
+      {% elif message|stringformat:"s" == "rejected" %}
+        <div class="col-6 alert alert-danger" role="alert">
+          <h4> 
+            <i class="bi bi-x-circle-fill"></i> 
+            Préstamo rechazado
+          </h4>
+          <p>Seguí participando</p>
+          <hr>
+          <p class="mb-0">Sacala del ángulo</p>
+        </div> 
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="container d-flex justify-content-center">
+    <div>
+      <a href="{% url 'home' %}" class="btn btn-primary">
+        <i class="bi bi-house-door"></i>
+        Regresar al inicio
+      </a>
+      <a href="{% url 'loans:create_loan' %}" class="btn btn-primary">
+        <i class="bi bi-cash-coin"></i>
+        Solicitar otro prestamo
+      </a>
+    </div>
+  </div>  
+{% else %}
+  <div class="container d-flex justify-content-center">
+    <h1 class="link-light">¿Que haces aca mi rey?</h1>
+  </div>
+{% endif %}
+{% endblock body %}

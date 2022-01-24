@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+{% block title %}
+    Lista de usuarios
+{% endblock title %}
+{% block body %}
+    
+    {% if user.is_staff %}
+        {% if users %}
+        <div class="container-fluid">
+            <table class="table table-dark table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre de Usuario</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Correo Electrónico</th>
+                    <th scope="col" class="text-center">Staff</th>
+                    <th scope="col" class="text-center">SU</th>
+                    <th scope="col">Último inicio de sesión</th>
+                    <th scope="col" class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for usr in users %}
+                        <tr>
+                            <th scope="row">{{ usr.id }}</th>
+                            <td>{{ usr.username }}</td>
+                            <td>{{ usr.name }}</td>
+                            <td>{{ usr.last_name }}</td>
+                            <td>{{ usr.email }}</td>
+                            
+                            {% if usr.is_staff %}
+                                <td class="text-center">Si</td>
+                            {% else %}
+                                <td class="text-center">No</td> 
+                            {% endif %}
+                            {% if usr.is_superuser %}
+                                <td class="text-center">Si</td>
+                            {% else %}
+                                <td class="text-center">No</td> 
+                            {% endif %}
+                            
+                            {% if usr.last_login is None %}
+                                <td>Nunca</td>
+                            {% else %}
+                            <td>{{ usr.last_login }}</td>
+                            {% endif %}
+                            <td class="text-center">
+                                
+                                {% if user.is_superuser %}
+                                    <a class="btn btn-success" href="{% url 'users:edit_user' usr.id %}">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                {% endif %}
+
+                                <a class="btn btn-danger" href="{% url 'users:delete_user' usr.id %}">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %} 
+                </tbody>
+            </table>
+            <br>
+            <a href="{% url 'users:create_user' %}" class="btn btn-outline-success me-2">Registrar nuevo usuario</a>
+        </div>
+        {% else %}
+            <h1 class="link-light">No existen usuarios</h1>    
+        {% endif %}
+    {% else %}
+        <h1 class="link-light">No tiene permisos de Staff</h1>
+    {% endif %}
+    <br>
+{% endblock body %}

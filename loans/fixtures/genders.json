@@ -1,0 +1,23 @@
+[
+    {
+        "model":"loans.Gender",
+        "pk" : 1,
+        "fields":{
+            "gender_name":"Femenino"
+        }
+    },
+    {
+        "model":"loans.Gender",
+        "pk" : 2,
+        "fields":{
+            "gender_name":"Masculino"
+        }
+    },
+    {
+        "model":"loans.Gender",
+        "pk" : 3,
+        "fields":{
+            "gender_name":"Otro"
+        }
+    }
+]

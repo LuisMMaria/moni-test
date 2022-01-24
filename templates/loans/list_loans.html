@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% block title %}
+    Lista de préstamos
+{% endblock title %}
+{% block body %}
+    {% if user.is_staff %}
+        <div class="container-fluid">
+        {% if loans %}
+        <table class="table table-dark">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre/s</th>
+                <th scope="col">Apellido/s</th>
+                <th scope="col">Correo Electrónico</th>
+                <th scope="col">DNI</th>
+                <th scope="col" class="text-center">Género</th>
+                <th scope="col" class="text-center">Monto</th>
+                <th scope="col" class="text-center">Estado</th>
+                
+                {% if user.is_superuser %}
+                <th scope="col" class="text-center">Eliminar</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                    <tr>
+                        <th scope="row">{{ loan.id }}</th>
+                        <td>{{ loan.name }}</td>
+                        <td>{{ loan.last_name }}</td>
+                        <td>{{ loan.email }}</td>
+                        <td>{{ loan.dni }}</td>
+                        <td class="text-center">{{ loan.gender.gender_name }}</td>
+                        <td class="text-end">$ {{ loan.amount }}</td>
+                        {% if loan.status %}
+                            <td class="link-success text-center">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Aprobado
+                            </td>
+                        {% else %}
+                        <td class="link-danger text-center">
+                            <i class="bi bi-x-circle-fill"></i>
+                            Rechazado
+                        </td>
+                        {% endif %}
+                        
+                        {% if user.is_superuser %}
+                        <td class="text-center">
+                            <a class="btn btn-danger" href="{% url 'loans:delete_loan' loan.id %}">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %} 
+            </tbody>
+        </table>
+        {% else %}
+            <h1 class="link-light">No existen préstamos</h1>    
+        {% endif %}
+    {% else %}
+        <h1 class="link-light">No tiene permisos para ver la lista de préstamos</h1>
+    {% endif %}
+        
+    <br>
+    <a href="{% url 'loans:create_loan' %}" class="btn btn-primary">
+        <i class="bi bi-cash-coin"></i>
+        Solicitar un préstamo
+      </a>
+    </div>
+    <br>
+{% endblock body %}

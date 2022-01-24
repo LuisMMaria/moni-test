@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% block title %}
+    Pedido de Préstamo
+{% endblock title %}
+{% block body %}
+<div class="container" style="color: white;">
+    <div class="row text-center">
+        <h1>Pedido de Préstamo</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <form method="POST" action="#">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.dni.label }}</label>
+                    {{ form.dni }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.gender.label }}</label>
+                    {{ form.gender }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.amount.label }}</label>
+                    {{ form.amount }}
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Solicitar préstamo</button>
+                    <button type="reset" class="btn btn-danger">Borrar</button>
+                </div>
+                
+                {% if form.errors %}
+                <br>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                        <div class="text-center alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %} 
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body %}

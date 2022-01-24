@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+{% block title %}
+
+{% if form.instance.id is None %}
+    Registro de usuario
+{% else %}
+    Modificación de usuario
+{% endif %}
+    
+    
+{% endblock title %}
+{% block body %}
+{% if request.user.is_superuser or request.user.id == form.instance.id or form.instance.id is None %}
+    <div class="container link-light">
+        <div class="row text-center">
+
+            {% if form.instance.id is None %}
+                <h1>Registro de Usuario</h1>
+            {% else %}
+                <h1>Modificación de Usuario</h1>
+            {% endif %}
+            
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                    <label class="form-label">{{ form.username.label }}</label>
+                    {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.name.label }}</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.password.label }}</label>
+                        {{ form.password }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.password_confirmation.label }}</label>
+                        {{ form.password_confirmation }}
+                    </div>
+                    
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <div class="mb-3 form-check">
+                            {{ form.is_staff }}
+                            <label class="form-check-label">{{ form.is_staff.label }}</label>
+                        </div>
+                    {% endif %}
+                    
+                    {% if request.user.is_superuser %}
+                        <div class="mb-3 form-check">
+                            {{ form.is_superuser }}
+                            <label class="form-check-label">{{ form.is_superuser.label }}</label>
+                        </div>
+                    {% endif %}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="reset" class="btn btn-danger">Cancelar</button>
+                    </div>
+                    {% if form.errors %}
+                    <br>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                            <div class="text-center alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% else %}
+<h1 class="link-light">No tiene permisos para editar este usuario</h1>
+{% endif %}
+    
+{% endblock body %}
